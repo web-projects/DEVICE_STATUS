@@ -1,0 +1,56 @@
+﻿<Window x:Class="DeviceStatus.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeviceStatus"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="CustId" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" x:Name="CustIdTB" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="1152702" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="2" Grid.Column="0" Content="Password" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Name="PasswordTB" Grid.Column="1" Text="testipa1" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Interval" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" x:Name="IntervalTB" Text="1000" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="3">
+            <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                <ScrollViewer x:Name="ResultScrollView">
+                    <TextBlock x:Name="ResponseTB" Text="Press 'Start' to submit request..." HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="750" MinHeight="260" Padding="10" TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="4">
+            <ProgressBar x:Name="RequestProgress" Value="0" HorizontalAlignment="Left" Height="18" Margin="10,0" VerticalAlignment="Top" Width="774"/>
+        </Grid>
+        <Grid Grid.Row="5">
+            <Button x:Name="ActionBtn" Content="Start" Margin="0,0,0,5" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="60" Click="Action_Click"></Button>
+        </Grid>
+    </Grid>
+</Window>
