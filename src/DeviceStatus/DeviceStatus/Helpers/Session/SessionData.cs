@@ -152,9 +152,39 @@ namespace DeviceStatus.Helpers.Session
             JsonMessageBox.Show("Unknown Destination for Message", contents);
         }
 
+        private void SawOutputErrorPrivate(string messageId, string contents)
+        {
+            for (int i = _fillers.Count - 1; i >= 0 && i < _fillers.Count; i--)
+            {
+                string key = _fillers.Keys.ToArray()[i];
+                if (key.Equals(messageId))
+                {
+                    try
+                    {
+                        if (_fillers[key] != null)
+                        {
+                            string errorContents = "ERROR|" + contents;
+                            _fillers[key].Invoke(errorContents);
+                        }
+                    }
+                    catch (Exception xcp)
+                    {
+                        JsonMessageBox.Show("Error", xcp.Message);
+                    }
+                    _fillers.Remove(key);
+                    return;
+                }
+            }
+        }
+
         public static void SawOutput(string fname, string contents)
         {
             _lastSessionData?.SawOutputPrivate(fname, contents);
+        }
+
+        public static void SawOutputError(string messageId, string contents)
+        {
+            _lastSessionData?.SawOutputErrorPrivate(messageId, contents);
         }
 
         public List<EventData> GetEventData(string messType = "Event")

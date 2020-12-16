@@ -102,7 +102,7 @@ namespace DeviceStatus.Helpers
             return await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
 
-        public static async Task SendRequest(string endpoint, string contents, int timeout = 100)
+        public static async Task SendRequest(string messageId, string endpoint, string contents, int timeout = 100)
         {
             if (endpoint?.StartsWith("http", StringComparison.OrdinalIgnoreCase) ?? false)
             {
@@ -113,7 +113,8 @@ namespace DeviceStatus.Helpers
                 }
                 catch (Exception xcp)
                 {
-                    JsonMessageBox.Show("Error", xcp.Message);
+                    //JsonMessageBox.Show("Error", xcp.Message);
+                    SessionData.SawOutputError(messageId, xcp.Message);
                 }
                 return;
             }

@@ -2,6 +2,7 @@
 using DeviceStatus.Helpers.RequestBuilders;
 using DeviceStatus.Helpers.Session;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ namespace DeviceStatus
         public static string SessionID;
         public static long CustId;
         public static string Password;
+        public string DefCustID = ConfigurationManager.AppSettings["TCCustId"] ?? "1152702";
+        public string DefPassword = ConfigurationManager.AppSettings["TCPassword"] ?? "testipa1";
+        public string DefInterval = ConfigurationManager.AppSettings["Interval"] ?? "1000";
 
         public MainWindow()
         {
@@ -38,6 +42,10 @@ namespace DeviceStatus
 
         private void Initialize()
         {
+            CustIdTB.Text = DefCustID;
+            PasswordTB.Text = DefPassword;
+            IntervalTB.Text = DefInterval;
+
             _sessionData = new SessionData(RefreshEvent);
 
             ResponseTB.Text = "Press 'Start' to submit request...";
@@ -139,8 +147,10 @@ namespace DeviceStatus
                 return "Invalid Custid";
             }
 
+            // Variables
             CustId = tempCustid;
             Password = PasswordTB.Text;
+
 
             string output = "ERROR";
             if (action.Equals("Get Status"))
@@ -169,7 +179,7 @@ namespace DeviceStatus
                 return;
             }
             SessionData.RegisterMessage(curRequest.MessageID, LoadResponseRTB);
-            _ = Helper.SendRequest(EndPoint, request);
+            _ = Helper.SendRequest(curRequest.MessageID, EndPoint, request);
 
             responseReceived = false;
         }
@@ -192,13 +202,18 @@ namespace DeviceStatus
             }
             else
             {
-                requestIsActive = false;
-                StopIntervalTimer();
-                RequestProgress.Value = 0;
-                ActionBtn.Content = "Start";
-                ResponseTB.Text = "Press 'Start' to submit request...";
-                SetControlsMode(true);
+                StopRequestInterval();
             }
+        }
+
+        private void StopRequestInterval()
+        {
+            requestIsActive = false;
+            StopIntervalTimer();
+            RequestProgress.Value = 0;
+            ActionBtn.Content = "Start";
+            ResponseTB.Text = "Press 'Start' to submit request...";
+            SetControlsMode(true);
         }
 
         public void RefreshEvent()
@@ -211,11 +226,24 @@ namespace DeviceStatus
             if (!responseReceived)
             {
                 responseReceived = true;
-                StartIntervalTimer();
+
+                string responseString = theJson;
+
+                if (theJson.StartsWith("ERROR|"))
+                {
+                    responseString = theJson.Substring(6);
+                    StopIntervalTimer();
+                    StopRequestInterval();
+                }
+                else
+                { 
+                    StartIntervalTimer();
+                }
+
                 this.Dispatcher.Invoke((Action)delegate ()
                 {
-                    LoadResponseRTB(theJson);
-                    ResponseTB.Text = theJson;
+                    LoadResponseRTB(responseString);
+                    ResponseTB.Text = responseString;
                 });
             }
         }
