@@ -47,7 +47,7 @@
             </Border>
         </Grid>
         <Grid Grid.Row="4">
-            <ProgressBar x:Name="RequestProgress" Value="0" HorizontalAlignment="Left" Height="18" Margin="10,0" VerticalAlignment="Top" Width="774"/>
+            <ProgressBar x:Name="RequestProgress" Value="0" Height="18" Margin="10,0" VerticalAlignment="Center" MinWidth="774" HorizontalContentAlignment="Stretch"/>
         </Grid>
         <Grid Grid.Row="5">
             <Button x:Name="ActionBtn" Content="Start" Margin="0,0,0,5" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="60" Click="Action_Click"></Button>

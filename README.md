@@ -31,3 +31,4 @@ This an application to test Network Communication.
 ### HISTORY ###
 
 * 20201215 - Initial repository
+* 20201216 - Added configuration option
